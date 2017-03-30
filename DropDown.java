@@ -3,40 +3,47 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class DropDown{
-	/*JLabel lbl = new JLabel();*/
 	
 	JFrame f;   
 	
 	DropDown(){    
-	    f=new JFrame("DropDown");
+	    f=new JFrame("Clicker");
 	    
-	    final JLabel label = new JLabel("Hi there");
-	    label.setHorizontalAlignment(JLabel.CENTER);  
-	    label.setSize(400,100);  
+	    JPanel panel = new JPanel();//uses BorderLayout by default
+	    f.add(panel);
+	   	    
+	    TextArea text = new TextArea(20,50);
 	    
-	    JButton b=new JButton("Show");  
-	    b.setBounds(200,100,75,20);
+	    JButton button=new JButton("Show");
 	    
 	    String choices[] = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-	    
 	    JComboBox cb=new JComboBox(choices);
-	    
-	    cb.setBounds(50, 50,90,20);
-	    
-	    f.add(cb); f.add(label); f.add(b);
-	    
-	    f.setLayout(null);    
+
+	    panel.add(cb, BorderLayout.PAGE_START);
+	    panel.add(text, BorderLayout.CENTER);
+	    panel.add(button, BorderLayout.PAGE_END); 
+	       
 	    f.setSize(400,500);    
 	    f.setVisible(true);    
 	    
 	    ActionListener a = new ActionListener() {  
-    		public void actionPerformed(ActionEvent e) {       
-    			String data = "Selected: " + cb.getItemAt(cb.getSelectedIndex());  
-    			label.setText(data);  
+    		public void actionPerformed(ActionEvent e) {
+    			if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1")){
+    				text.append("Button Clicked times Button Clicked times Button Clicked times");
+    				text.append("\n");
+    			}else if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 2")){
+    				text.append("b");
+    				text.append("\n");
+    			}else if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 3")){
+    				text.append("c");
+    				text.append("\n");
+    			}else{
+    				text.setText("make choice");
+    			}
     		}
     	};
 	    
-	    b.addActionListener(a);  
+	    button.addActionListener(a);  
 	}
 	
 	
