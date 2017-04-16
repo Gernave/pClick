@@ -2,7 +2,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import java.awt.Image;
 public class GUIv4 {
 
 	private JFrame f = new JFrame("Title");//main window
@@ -98,9 +98,18 @@ public class GUIv4 {
 		
 		results.setLayout(new FlowLayout());
 		
-		ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
-		JLabel imageLabel = new JLabel(image); 
-		//results.add(imageLabel);
+		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
+		
+		Image image = imageIcon.getImage(); // transform it
+
+		Image newimg = image.getScaledInstance(400, 300,  java.awt.Image.SCALE_SMOOTH); 
+		// scale it the smooth way 
+
+		imageIcon = new ImageIcon(newimg);
+		
+		JLabel imageLabel = new JLabel(imageIcon); 
+		
+		results.add(imageLabel);
 
 		
 		TextArea text = new TextArea(3,50);
@@ -120,6 +129,16 @@ public class GUIv4 {
 		
 		ActionListener go = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("button works");
+				
+				if(radioButton_1.isSelected()){
+					System.out.println("rb works");
+				}
+				
+				if(checkBox_1.isSelected()){
+					System.out.println("checkbox works");
+				}
+				
 				if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1")){
 					text.append("Button Clicked");
 					text.append("\n");
