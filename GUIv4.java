@@ -7,16 +7,20 @@ public class GUIv4 {
 
 	private JFrame f = new JFrame("Title");//main window
 
-	private JFrame imageWindow = new JFrame("Image");//window displaying image
-
 	private JButton updateB = new JButton("Update data for your classes");
 
 	private JButton helpB = new JButton("Help");
 
 	private JButton goB = new JButton("Go");//takes user input
-
+	
+	private JButton barchartB = new JButton("Show answers");
+	
+	private JButton screenshotB = new JButton("Show qustions");
+	
 	GUIv4(){
-
+		
+		//f.setLayout(new BoxLayout(f, BoxLayout.PAGE_AXIS));
+		
 			//****GUI PARTS****//
 
 		JPanel topButtons = top();
@@ -96,27 +100,19 @@ public class GUIv4 {
 			
 			//****RESULTS****//
 		
-		results.setLayout(new FlowLayout());
-		
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
-		
-		Image image = imageIcon.getImage(); // transform it
+		results.setLayout(new BoxLayout(results, BoxLayout.PAGE_AXIS));
 
-		Image newimg = image.getScaledInstance(400, 300,  java.awt.Image.SCALE_SMOOTH); 
-		// scale it the smooth way 
-
-		imageIcon = new ImageIcon(newimg);
-		
-		JLabel imageLabel = new JLabel(imageIcon); 
-		
-		results.add(imageLabel);
-
-		
 		TextArea text = new TextArea(3,50);
-		//results.add(text);
+		
+		JPanel pictureButtons = new JPanel();
+		pictureButtons.add(screenshotB);
+		pictureButtons.add(barchartB);
+		
+		results.add(text);
+		results.add(pictureButtons);
 		
 		
-				
+
 			//****ADDING GUI PARTS****//
 
 		f.getContentPane().add(topButtons, BorderLayout.PAGE_START);
@@ -128,58 +124,75 @@ public class GUIv4 {
 			//****ACTION LISTENERS FOR BUTTONS****//
 		
 		ActionListener go = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("button works");
+			public void actionPerformed(ActionEvent e) {				
+				radioButton_1.isSelected();
 				
-				if(radioButton_1.isSelected()){
-					System.out.println("rb works");
-				}
+				checkBox_1.isSelected();
 				
-				if(checkBox_1.isSelected()){
-					System.out.println("checkbox works");
-				}
+				cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1");
 				
-				if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1")){
-					text.append("Button Clicked");
-					text.append("\n");
-				}else if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 2")){
-					text.append("b");
-					text.append("\n");
-				}else if(cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 3")){
-					text.append("c");
-					text.append("\n");
-				}else{
-					text.setText("make choice");
-				}
+				text.setText("make choice");
 			}
 		};
 
 		ActionListener update = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 			}
 		};
 
 		ActionListener help = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+			}
+		};
+		
+		ActionListener screenshot = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame imageWindow = new JFrame("Image");
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
+				JLabel imageLabel = new JLabel(image); 
+				imageWindow.add(imageLabel);
+				imageWindow.pack();
+				imageWindow.setVisible(true);
+			}
+		};
+		
+		ActionListener barchart = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFrame imageWindow = new JFrame("Image");
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (5).png");
+				JLabel imageLabel = new JLabel(image); 
+				imageWindow.add(imageLabel);
+				imageWindow.pack();
+				imageWindow.setVisible(true);
 			}
 		};
 		
 		
 		goB.addActionListener(go);  
 		updateB.addActionListener(update); 
-		helpB.addActionListener(help); 
+		helpB.addActionListener(help);
+		screenshotB.addActionListener(screenshot);
+		barchartB.addActionListener(barchart);
 	}
 
-	private void showImage(String imageAddress){
-		ImageIcon image = new ImageIcon(imageAddress);
-		JLabel imageLabel = new JLabel(image); 
-		imageWindow.add(imageLabel);
-		imageWindow.pack();
-		imageWindow.setVisible(false);
-	}
+	
+	/*
+	 * WIP
+	 */
+	private void showImageInGUI(String imageAddress){
+		ImageIcon imageIcon = new ImageIcon(imageAddress);
+		
+		Image image = imageIcon.getImage(); // transform it
 
+		Image newimg = image.getScaledInstance(400, 300,  java.awt.Image.SCALE_SMOOTH); 
+		// scale it the smooth way 
+		
+		imageIcon = new ImageIcon(newimg);
+		
+		//imageLabel = new JLabel(imageIcon);
+		
+		//results.add(imageLabel);
+	}
 
 	private JPanel top(){
 		/*
