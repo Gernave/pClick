@@ -125,13 +125,15 @@ public class GUIv4 {
 		
 		ActionListener go = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {				
-				radioButton_1.isSelected();
+				radioButton_1.isSelected();//checks whether radiobutton is selected
 				
-				checkBox_1.isSelected();
+				checkBox_1.isSelected();//checks whether checkbox is selected
 				
-				cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1");
+				cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1");//checks the selected option from dropdown
 				
-				text.setText("make choice");
+				text.setText("make choice");//sets string in textbox
+				
+				text.append("make choice");//adds string to the text in textbox
 			}
 		};
 
@@ -148,7 +150,7 @@ public class GUIv4 {
 		ActionListener screenshot = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFrame imageWindow = new JFrame("Image");
-				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");//insert image address here
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
@@ -159,7 +161,7 @@ public class GUIv4 {
 		ActionListener barchart = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFrame imageWindow = new JFrame("Image");
-				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (5).png");
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (5).png");//insert image address here
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
