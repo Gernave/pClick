@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.awt.Image;
-public class GUIv4 {
+public class GUIv5 {
 
 	private JFrame f = new JFrame("Title");//main window
 
@@ -23,7 +22,7 @@ public class GUIv4 {
 	
 	DBConnect connect = new DBConnect(); 
 	
-	GUIv4(){
+	GUIv5(){
 		
 		//f.setLayout(new BoxLayout(f, BoxLayout.PAGE_AXIS));
 		
@@ -142,13 +141,23 @@ public class GUIv4 {
 				{2, "Rambo", 70.0, false },
 				{3, "Zorro", 60.0, true },
 		};
-		JTable table = new JTable(data, columns);
+		
+		String[][] data2 = new String[4][4];
+		for(int j1=0; j1<4; j1++){
+			for(int k=0; k<4; k++){
+				data2[j1][k]="some";
+			}
+			
+		}
+		JTable table = new JTable(data2, columns);
 			
 			//***Picture buttons***//
 		
 		JPanel pictureButtons = new JPanel();
 		pictureButtons.add(screenshotB);
 		pictureButtons.add(barchartB);
+
+		TextArea text = new TextArea(20,50);
 		
 		results.add(table);
 		results.add(pictureButtons);
@@ -211,8 +220,12 @@ public class GUIv4 {
 			}
 		};
 		
-		ActionListener screenshot = new ActionListener() {
+		ActionListener screenshot = new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
+				
+
+				table.isRowSelected(1); //function for checking row
+				
 				JFrame imageWindow = new JFrame("Image");
 				
 				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
