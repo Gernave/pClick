@@ -30,9 +30,15 @@ public class GUIv4 {
 			//****GUI PARTS****//
 
 		JPanel topButtons = top();
+		
 		JPanel dropdowns = center();
-		JPanel results = new JPanel();
+		
+		JPanel results = new JPanel(); 
+		results.setLayout(new BoxLayout(results, BoxLayout.PAGE_AXIS));
 
+		
+		
+		
 			//****CENTER PART****//
 
 		int i = 8;	//row
@@ -47,6 +53,10 @@ public class GUIv4 {
 			}
 		}
 
+		
+		
+		
+		
 			//****LABELS****//
 
 		JLabel label_1 = new JLabel("Term");
@@ -100,6 +110,9 @@ public class GUIv4 {
 		panelHolder[6][1].add(checkBox_2);
 		panelHolder[7][1].add(goB);				
 
+		
+		
+		
 			//****RIGHT COLUMN****//
 
 		JCheckBox checkBox_3 = new JCheckBox("Unpaired suestions");
@@ -117,15 +130,27 @@ public class GUIv4 {
 			
 			//****RESULTS****//
 		
-		results.setLayout(new BoxLayout(results, BoxLayout.PAGE_AXIS));
-
-		TextArea text = new TextArea(20,50);
+			//***Table***//
+		
+		String[] columns = new String[] {
+				"Id", "Name", "Hourly Rate", "Part Time"
+		};
+		//placeholder table
+		Object[][] data = new Object[][] {
+				{"Id", "Name", "Hourly Rate", "Part Time"},
+				{1, "John", 40.0, false },
+				{2, "Rambo", 70.0, false },
+				{3, "Zorro", 60.0, true },
+		};
+		JTable table = new JTable(data, columns);
+			
+			//***Picture buttons***//
 		
 		JPanel pictureButtons = new JPanel();
 		pictureButtons.add(screenshotB);
 		pictureButtons.add(barchartB);
 		
-		results.add(text);
+		results.add(table);
 		results.add(pictureButtons);
 		
 		
@@ -138,6 +163,9 @@ public class GUIv4 {
 		f.pack();
 		f.setVisible(true);
 		
+		
+		
+		
 			//****ACTION LISTENERS FOR BUTTONS****//
 		
 		ActionListener go = new ActionListener() {
@@ -145,6 +173,8 @@ public class GUIv4 {
 				radioButton_1.isSelected();//checks whether radiobutton is selected
 				
 				checkBox_1.isSelected();//checks whether checkbox is selected
+				
+				table.getModel().setValueAt("It works", 1, 1);//command for editing table
 				
 				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
 					TreeMap<String, String> temp = new TreeMap<String, String>(); 
@@ -159,9 +189,9 @@ public class GUIv4 {
 			           text.append(key + " = " + value);
 			           
 			           text.append("\n");
+				
 
-
-			} 
+				} 
 					
 					
 					
