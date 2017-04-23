@@ -2,6 +2,10 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.TreeMap;
 import java.awt.Image;
 public class GUIv4 {
 
@@ -15,7 +19,9 @@ public class GUIv4 {
 	
 	private JButton barchartB = new JButton("Show answers");
 	
-	private JButton screenshotB = new JButton("Show qustions");
+	private JButton screenshotB = new JButton("Show questions");
+	
+	DBConnect connect = new DBConnect(); 
 	
 	GUIv4(){
 		
@@ -50,7 +56,7 @@ public class GUIv4 {
 		JLabel label_5 = new JLabel("Order by");
 		JLabel label_6 = new JLabel("Ignore");
 
-		panelHolder[0][0].add(label_1);
+		//panelHolder[0][0].add(label_1);
 		panelHolder[1][0].add(label_2);
 		panelHolder[2][0].add(label_3);
 		panelHolder[3][0].add(label_4);
@@ -59,22 +65,33 @@ public class GUIv4 {
 
 			//****DROPDOWNS****//
 
-		String choices[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		String classList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		String sessionList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+		ArrayList<String> courses = new ArrayList<String>();
+		ArrayList<String> sessions = new ArrayList<String>(); 
+		sessions = connect.getsession(); 
+		courses = connect.getcoursename(); 
+		
+		String[] classList = new String[courses.size()]; 
+		 classList = courses.toArray(classList); 
+		String[] sessionList = new String[sessions.size()]; 
+		sessionList = sessions.toArray(sessionList); 
+		
+	//	String choices[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+	//	String classList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+		//String sessionList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
 		String showOptions[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		String orderOptions[] = {"Chronological", "CHOICE 1","CHOICE 2", "CHOICE 3"};
-
-		JComboBox cb = new JComboBox(choices);
+		//String ignoreOptions[] = {"Ignore", "CHOICE 1","CHOICE 2", "CHOICE 3"};
+		String orderOptions[] = {"By Date", "By Name"};
+		
+		//JComboBox cb = new JComboBox(choices);
 		JComboBox classMenu = new JComboBox(classList);
 		JComboBox sessionMenu = new JComboBox(sessionList);
 		JComboBox showMenu = new JComboBox(showOptions);
+		//JComboBox ignoreMenu = new JComboBox(ignoreOptions);
 		JComboBox orderMenu = new JComboBox(orderOptions);
-
 		JCheckBox checkBox_1 = new JCheckBox("Paired questions");
 		JCheckBox checkBox_2 = new JCheckBox("1st half");
 
-		panelHolder[0][1].add(cb);
+		//panelHolder[0][1].add(cb);
 		panelHolder[1][1].add(classMenu);		
 		panelHolder[2][1].add(sessionMenu);		
 		panelHolder[3][1].add(showMenu);
@@ -102,7 +119,7 @@ public class GUIv4 {
 		
 		results.setLayout(new BoxLayout(results, BoxLayout.PAGE_AXIS));
 
-		TextArea text = new TextArea(3,50);
+		TextArea text = new TextArea(20,50);
 		
 		JPanel pictureButtons = new JPanel();
 		pictureButtons.add(screenshotB);
@@ -129,11 +146,28 @@ public class GUIv4 {
 				
 				checkBox_1.isSelected();//checks whether checkbox is selected
 				
-				cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1");//checks the selected option from dropdown
+				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
+					TreeMap<String, String> temp = new TreeMap<String, String>(); 
+					temp = connect.getIDnFancs(); 
+				//	text.append((Arrays.asList(temp).toString()));
+					//text.append("\n");
+					
+					for (String name: temp.keySet()){
+
+			            String key =name.toString();
+			            String value = temp.get(name).toString();  
+			           text.append(key + " = " + value);
+			           
+			           text.append("\n");
+
+
+			} 
+					
+					
+					
+				}
 				
-				text.setText("make choice");//sets string in textbox
-				
-				text.append("make choice");//adds string to the text in textbox
+			
 			}
 		};
 
@@ -150,18 +184,23 @@ public class GUIv4 {
 		ActionListener screenshot = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFrame imageWindow = new JFrame("Image");
-				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");//insert image address here
+				
+				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
+				ImageIcon image = new ImageIcon("C:\\Users\\Rishav Sharma\\Desktop\\Clicker Project\\pClick-master\\CS 141 FALL 2016\\Images\\L1611021411_Q1.jpg");//insert image address here
+				
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
 				imageWindow.setVisible(true);
+
+				}
 			}
 		};
 		
 		ActionListener barchart = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFrame imageWindow = new JFrame("Image");
-				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (5).png");//insert image address here
+				ImageIcon image = new ImageIcon("C:\\Users\\Rishav Sharma\\Desktop\\Clicker Project\\pClick-master\\CS 141 FALL 2016\\Images\\L1611021411_C1.jpg");//insert image address here
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
