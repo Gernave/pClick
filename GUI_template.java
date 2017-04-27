@@ -18,7 +18,12 @@ public class GUIv4 {
 	private JButton screenshotB = new JButton("Show qustions");
 	
 	GUIv4(){
-		
+
+		try
+		{
+		    setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,20));
+		}
+		catch(Exception e){}
 		//f.setLayout(new BoxLayout(f, BoxLayout.PAGE_AXIS));
 		
 			//****GUI PARTS****//
@@ -193,8 +198,20 @@ public class GUIv4 {
 		helpB.addActionListener(help);
 		screenshotB.addActionListener(screenshot);
 		barchartB.addActionListener(barchart);
+		
 	}
 
+
+	public static void setUIFont(javax.swing.plaf.FontUIResource f)
+	{   
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while(keys.hasMoreElements())
+		{
+			Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if(value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
+		}
+	}
 	
 	/*
 	 * WIP
