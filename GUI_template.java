@@ -2,11 +2,8 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.TreeMap;
-public class GUIv5 {
+import java.awt.Image;
+public class GUI_template {
 
 	private JFrame f = new JFrame("Title");//main window
 
@@ -18,23 +15,16 @@ public class GUIv5 {
 	
 	private JButton barchartB = new JButton("Show answers");
 	
-	private JButton screenshotB = new JButton("Show questions");
+	private JButton screenshotB = new JButton("Show qustions");
 	
-	DBConnect connect = new DBConnect(); 
-	
-	ConnectTest connector = new ConnectTest(); 
-	
-	String classResp = ""; 
-	String sessionResp = ""; 
-	
-	
-	GUIv5(){
-		
+	GUI_template(){
+
 		try
 		{
 		    setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,20));
 		}
 		catch(Exception e){}
+		//f.setLayout(new BoxLayout(f, BoxLayout.PAGE_AXIS));
 		
 			//****GUI PARTS****//
 
@@ -42,30 +32,23 @@ public class GUIv5 {
 		
 		JPanel dropdowns = center();
 		
-		JPanel results = new JPanel(); 
+		JPanel results = new JPanel();
 		results.setLayout(new BoxLayout(results, BoxLayout.PAGE_AXIS));
 
-		
-		
-		
 			//****CENTER PART****//
 
-		int panelsRow = 8;	//row
-		int panelsCol = 4;	//column
-		JPanel[][] panelHolder = new JPanel[panelsRow][panelsCol];    
-		dropdowns.setLayout(new GridLayout(panelsRow,panelsCol));
+		int i = 8;	//row
+		int j = 4;	//column
+		JPanel[][] panelHolder = new JPanel[i][j];    
+		dropdowns.setLayout(new GridLayout(i,j));
 
-		for(int m = 0; m < panelsRow; m++) {
-			for(int n = 0; n < panelsCol; n++) {
+		for(int m = 0; m < i; m++) {
+			for(int n = 0; n < j; n++) {
 				panelHolder[m][n] = new JPanel();
 				dropdowns.add(panelHolder[m][n]);
 			}
 		}
 
-		
-		
-		
-		
 			//****LABELS****//
 
 		JLabel label_1 = new JLabel("Term");
@@ -75,7 +58,7 @@ public class GUIv5 {
 		JLabel label_5 = new JLabel("Order by");
 		JLabel label_6 = new JLabel("Ignore");
 
-		//panelHolder[0][0].add(label_1);
+		panelHolder[0][0].add(label_1);
 		panelHolder[1][0].add(label_2);
 		panelHolder[2][0].add(label_3);
 		panelHolder[3][0].add(label_4);
@@ -84,33 +67,22 @@ public class GUIv5 {
 
 			//****DROPDOWNS****//
 
-		ArrayList<String> courses = new ArrayList<String>();
-		ArrayList<String> sessions = new ArrayList<String>(); 
-		sessions = connect.getsession(); 
-		courses = connect.getcoursename(); 
-		
-		String[] classList = new String[courses.size()]; 
-		 classList = courses.toArray(classList); 
-		String[] sessionList = new String[sessions.size()]; 
-		sessionList = sessions.toArray(sessionList); 
-		
-	//	String choices[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-	//	String classList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		//String sessionList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+		String choices[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+		String classList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
+		String sessionList[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
 		String showOptions[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		//String ignoreOptions[] = {"Ignore", "CHOICE 1","CHOICE 2", "CHOICE 3"};
-		String orderOptions[] = {"By Date", "By Name"};
-		
-		//JComboBox cb = new JComboBox(choices);
+		String orderOptions[] = {"Chronological", "CHOICE 1","CHOICE 2", "CHOICE 3"};
+
+		JComboBox cb = new JComboBox(choices);
 		JComboBox classMenu = new JComboBox(classList);
 		JComboBox sessionMenu = new JComboBox(sessionList);
 		JComboBox showMenu = new JComboBox(showOptions);
-		//JComboBox ignoreMenu = new JComboBox(ignoreOptions);
 		JComboBox orderMenu = new JComboBox(orderOptions);
+
 		JCheckBox checkBox_1 = new JCheckBox("Paired questions");
 		JCheckBox checkBox_2 = new JCheckBox("1st half");
 
-		//panelHolder[0][1].add(cb);
+		panelHolder[0][1].add(cb);
 		panelHolder[1][1].add(classMenu);		
 		panelHolder[2][1].add(sessionMenu);		
 		panelHolder[3][1].add(showMenu);
@@ -119,9 +91,6 @@ public class GUIv5 {
 		panelHolder[6][1].add(checkBox_2);
 		panelHolder[7][1].add(goB);				
 
-		
-		
-		
 			//****RIGHT COLUMN****//
 
 		JCheckBox checkBox_3 = new JCheckBox("Unpaired suestions");
@@ -139,35 +108,30 @@ public class GUIv5 {
 			
 			//****RESULTS****//
 		
-			//***Table***//
 		
-		String[] columns = new String[] {
-				"Question Id", "Time taken", "Percentage of correct", "Class/Session"
-		};
-		
-		String[][] data2 = new String[10][4];//[row][column]
-		for(int row=0; row<10; row++){
-			for(int col=0; col<4; col++){
-				data2[row][col]=" ";
-			}
-			
-		}
-		
-		JTable table = new JTable(data2, columns);
-		table.setRowHeight(30);
 
-		results.add(new JScrollPane(table));
+		String[] columns = new String[] {
+				"Id", "Name", "Hourly Rate", "Part Time"
+		};
+
+		//actual data for the table in a 2d array
+		Object[][] data = new Object[][] {
+				{"Id", "Name", "Hourly Rate", "Part Time"},
+				{1, "John", 40.0, false },
+				{2, "Rambo", 70.0, false },
+				{3, "Zorro", 60.0, true },
+		};
+		//create table with data
+		JTable table = new JTable(data, columns);
 		
-			//***Picture buttons***//
+		
+		TextArea text = new TextArea(30,50);
 		
 		JPanel pictureButtons = new JPanel();
 		pictureButtons.add(screenshotB);
 		pictureButtons.add(barchartB);
-
-		TextArea text = new TextArea(10,50);
 		
-		//results.add(table);
-		//results.add(text);
+		results.add(table);
 		results.add(pictureButtons);
 		
 		
@@ -180,60 +144,20 @@ public class GUIv5 {
 		f.pack();
 		f.setVisible(true);
 		
-		
-		
-		
 			//****ACTION LISTENERS FOR BUTTONS****//
 		
 		ActionListener go = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-			
-				radioButton_1.isSelected();//checks whether radiobutton is selected
+			public void actionPerformed(ActionEvent e) {				
+				radioButton_1.isSelected();
 				
-				checkBox_1.isSelected();//checks whether checkbox is selected
+				checkBox_1.isSelected();
 				
-				//table.getModel().setValueAt("It works", 1, 1);//command for editing table
+				cb.getItemAt(cb.getSelectedIndex()).equals("CHOICE 1");
 				
+				text.setText("make choice");
 				
-				 
-				
-			
-				
-				classResp = (String)classMenu.getItemAt(classMenu.getSelectedIndex());
-				sessionResp = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex()); 
-				
-				
-				
-				System.out.println("The query is " + connector.getVals(classResp, sessionResp));
-				
-			
-				
-				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
-					ArrayList<String> temp = new ArrayList<String>(); 
-					temp = connect.getQuestions(); 
-				//	text.append((Arrays.asList(temp).toString()));
-					//text.append("\n");
-					
-					for(int i = 0; i<temp.size(); i++){
-						table.getModel().setValueAt(temp.get(i), i, 0);
-						System.out.println(temp.size());
-						text.append("\n");
-					}
-					
-					
-					
-				}
-				
-				
-			
+				table.getModel().setValueAt("It works", 1, 1);
 			}
-			
-			
-			
-			
-			
-			
-			
 		};
 
 		ActionListener update = new ActionListener() {
@@ -246,34 +170,21 @@ public class GUIv5 {
 			}
 		};
 		
-		ActionListener screenshot = new ActionListener() {			
+		ActionListener screenshot = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				int questionSelected;
-				
-				for(int i=0;i<5;i++){
-					if(table.isRowSelected(i)){ //function for checking row
-						questionSelected = i;
-					}
-				}
 				JFrame imageWindow = new JFrame("Image");
-				
-				if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
-				ImageIcon image = new ImageIcon("C:\\Users\\Rishav Sharma\\Desktop\\Clicker Project\\pClick-master\\CS 141 FALL 2016\\Images\\L1611021411_Q1.jpg");//insert image address here
-				
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (1).png");
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
 				imageWindow.setVisible(true);
-
-				}
 			}
 		};
 		
 		ActionListener barchart = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFrame imageWindow = new JFrame("Image");
-				ImageIcon image = new ImageIcon("C:\\Users\\Rishav Sharma\\Desktop\\Clicker Project\\pClick-master\\CS 141 FALL 2016\\Images\\L1611021411_C1.jpg");//insert image address here
+				ImageIcon image = new ImageIcon("C:\\Users\\Gernave\\Pictures\\Screenshots\\Screenshot (5).png");
 				JLabel imageLabel = new JLabel(image); 
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
@@ -287,8 +198,20 @@ public class GUIv5 {
 		helpB.addActionListener(help);
 		screenshotB.addActionListener(screenshot);
 		barchartB.addActionListener(barchart);
+		
 	}
 
+
+	public static void setUIFont(javax.swing.plaf.FontUIResource f)
+	{   
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while(keys.hasMoreElements())
+		{
+			Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if(value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
+		}
+	}
 	
 	/*
 	 * WIP
@@ -327,19 +250,4 @@ public class GUIv5 {
 		dropdowns.setLayout(new FlowLayout());
 		return dropdowns;
 	}
-	
-	
-	public static void setUIFont(javax.swing.plaf.FontUIResource f)
-	{   
-		java.util.Enumeration keys = UIManager.getDefaults().keys();
-		while(keys.hasMoreElements())
-		{
-			Object key = keys.nextElement();
-			Object value = UIManager.get(key);
-			if(value instanceof javax.swing.plaf.FontUIResource) UIManager.put(key, f);
-		}
-	}
-	
-	
-	
 }
