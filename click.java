@@ -5,9 +5,10 @@ public class click {
 	public static void main(String[] main){
 		 
 		
-		DropDown d = new DropDown(); 
+		GUIv5 d = new GUIv5(); 
 		DBConnect connect = new DBConnect();
 		boolean go = false; 
+		ConnectTest connector = new ConnectTest(); 
 		
 		
 		
@@ -31,9 +32,9 @@ public class click {
 			if(response == 1){ 
 				connect.getcoursename();
 			}else if(response == 2){ 
-				connect.getsession();
+				connect.getImage();
 			}else if(response == 3){ 
-				connect.getQuestions();
+				System.out.println("Class Resp is " + d.classResp + " Session Resp is " + d.sessionResp);
 			}	else if(response == 0){ 
 				System.out.println("Goodbye!");
 				go = true; 
