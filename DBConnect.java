@@ -16,7 +16,8 @@ public class DBConnect {
  ArrayList<String> ans = new ArrayList<String>(); 
  ArrayList<String> strttime = new ArrayList<String>(); 
  TreeMap<String, String>IDnfans = new TreeMap<String, String>(); 
- ArrayList<String> dura = new ArrayList<String>(); 
+ ArrayList<String> dura = new ArrayList<String>();
+ 
  
   //DropDown options;
 
@@ -77,7 +78,7 @@ public class DBConnect {
 	 
 	 public ArrayList<String> getQuestions(){ 
 		 try{ 
-			 String query = "SELECT name FROM questions WHERE session_id = 1";
+			 String query = "SELECT name FROM questions WHERE session_id = 2";
 			
 			 rs = st.executeQuery(query); 
 			 System.out.println("Records from database");
@@ -153,7 +154,7 @@ public class DBConnect {
 		 InputStream is = null; 
 		 try{ 
 			 int count = 0; 
-			 String query = "SELECT picture FROM questions WHERE questions.i"; 
+			 String query = "SELECT picture FROM questions WHERE questions.id = 1"; 
 			 
 			 rs = st.executeQuery(query); 
 			 System.out.println("Records from database");
@@ -182,7 +183,7 @@ public class DBConnect {
 	 
 	 public ArrayList<String> getDuration(){ 
 		 try{ 
-			 String query = "SELECT duration FROM questions";
+			 String query = "SELECT duration FROM questions WHERE session_id = 2";
 			
 			 rs = st.executeQuery(query); 
 			 System.out.println("Records from database");
