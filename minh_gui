@@ -5,8 +5,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
+
 public class GUIv6 {
 
 	private JFrame f = new JFrame("Title");//main window
@@ -24,10 +27,15 @@ public class GUIv6 {
 	ArrayList<String> questionCol; 
 	
 	ArrayList<String> durationCol;
+	
+	Map<String, String> nameCol; 
 
-	DBConnect connect = new DBConnect(); 
+	DBConnectv1 connect = new DBConnectv1(); 
+	QueryBuilderMini qbm = new QueryBuilderMini(); 
+
  
 	int randomInt = 0; 
+	
 	String classResp = ""; 
 	String sessionResp = "1"; 
 
@@ -40,7 +48,8 @@ public class GUIv6 {
 		catch(Exception e){}
 		*/
 		questionCol = new ArrayList<String>(); 
-		durationCol = new ArrayList<String>(); 
+		durationCol = new ArrayList<String>();
+		nameCol = new LinkedHashMap<String, String>(); 
 		//****GUI PARTS****//
 
 		JPanel topButtons = top();
@@ -98,7 +107,7 @@ public class GUIv6 {
 		sessionList = sessions.toArray(sessionList); 
 
 		String showOptions[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
-		String orderOptions[] = {"By Date", "By Name"};
+		String orderOptions[] = {"By Name", "By Time"};
 
 		JComboBox classMenu = new JComboBox(classList);
 		JComboBox sessionMenu = new JComboBox(sessionList);
@@ -115,7 +124,9 @@ public class GUIv6 {
 		panelHolder[6][1].add(checkBox_2);
 		panelHolder[7][1].add(goB);				
 
-
+	//	connect.getResponse();
+		//connect.getImage();
+			
 
 
 		//****RIGHT COLUMN****//
@@ -131,6 +142,12 @@ public class GUIv6 {
 		JPanel radioButtons = new JPanel();
 		radioButtons.add(radioButton_1);
 		radioButtons.add(radioButton_2);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(radioButton_1);
+		group.add(radioButton_2);
+		radioButton_1.setSelected(true); 
+
 
 		panelHolder[3][2].add(textField);
 		panelHolder[4][2].add(radioButton_1); panelHolder[4][3].add(radioButton_2);
@@ -184,32 +201,111 @@ public class GUIv6 {
 		ActionListener go = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 
-				if(radioButton_1.isSelected()){//checks whether radiobutton is selected
-					System.out.println("Selected" );
-				}
+				String order = ""; 
+				String orderCol = ""; 
 
 				checkBox_1.isSelected();//checks whether checkbox is selected
 
 				//table.getModel().setValueAt("It works", 1, 1);//command for editing table
-				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1"))
+
+
+				Random randomGenerator = new Random();
+				int randomInt; 
+				int randomInt1; 
+				ArrayList<Integer> a = new ArrayList<Integer>();
+				ArrayList<Integer> b = new ArrayList<Integer>(); 
+					
+				if(radioButton_1.isSelected()){//checks whether radiobutton is selected
+					 order = "ASC"; 
+				}else if(radioButton_2.isSelected()){ 
+					 order = "DESC"; 
+				}
 				
-	
+				if(orderMenu.getItemAt(orderMenu.getSelectedIndex()).equals("By Time")){
+					 orderCol = "duration";
+				}else{ 
+					 orderCol = "name"; 
+				}
+				
+				
+			
+				
+				
+				
+
 				classResp = (String)classMenu.getItemAt(classMenu.getSelectedIndex());
 				sessionResp = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex()); 
 
-				questionCol.clear(); 
-				durationCol.clear();  
 				
-				questionCol = connect.getQuestions(); 
-				durationCol = connect.getDuration();
+				connect.getImage(sessionResp); 
+				connect.getResponse(sessionResp); 
+				
+				//	String argum = qbm.qnameQuery(sessionResp); 
+					//String argum1 = qbm.duraQuery(sessionResp);
+					String argum2 = qbm.fquery(sessionResp, order, orderCol);
+				
 
+				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
+				
+				//questionCol.clear(); 
+				//durationCol.clear(); 
+				nameCol.clear(); 
+				
+				//questionCol = connect.getQuestions(argum); 
+				//durationCol = connect.getDuration(argum1);
+				nameCol = connect.getBoth(argum2); 
+				
+/*
 				for(int i = 0; i<questionCol.size(); i++){
 					table.getModel().setValueAt(questionCol.get(i), i, 0);
-					table.getModel().setValueAt(durationCol.get(i), i, 1);
+				text.append("\n");
 				}
-			}
-		};
+*/
+				int count = 0; 
+				for (String name: nameCol.keySet()){
+					
+		            String key =name.toString();
+		            String value = nameCol.get(name).toString(); 
+		            table.getModel().setValueAt(key, count, 0);
+		            table.getModel().setValueAt(value, count, 1);
+		            
+		           count++; 
 
+
+		} 
+				
+				
+				
+
+				for(int i = 0; i<nameCol.size(); i++){ 
+					randomInt = randomGenerator.nextInt(60) + 20;
+					randomInt1 = randomGenerator.nextInt(75) + 25; 
+					a.add(randomInt); 
+					b.add(randomInt1);
+					
+					String Int = Integer.toString(randomInt); 
+					String Int1 = Integer.toString(randomInt1); 
+					
+
+					table.getModel().setValueAt(Int+"%", i, 2);
+					table.getModel().setValueAt(Int1+"%", i, 3);
+					table.getModel().setValueAt("1", i, 4);
+
+				}
+
+			
+				
+				
+				
+
+			}
+			
+
+			
+			
+
+		};
+		
 		ActionListener update = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -234,7 +330,7 @@ public class GUIv6 {
 				JFrame imageWindow = new JFrame("Image");
 				System.out.println("Row is " + questionSelected);
 				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected))){
-
+				
 				ImageIcon image = new ImageIcon("d:\\"+Integer.toString(questionSelected)+".jpg");//insert image address here
 
 				JLabel imageLabel = new JLabel(image); 
@@ -259,7 +355,7 @@ public class GUIv6 {
 				JFrame imageWindow = new JFrame("Image");
 				System.out.println("Row is " + questionSelected);
 				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected))){
-
+				 
 				ImageIcon image = new ImageIcon("d:\\"+"r"+Integer.toString(questionSelected)+".jpg");//insert image address here
 
 				JLabel imageLabel = new JLabel(image); 
