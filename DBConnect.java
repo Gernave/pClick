@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 
-public class DBConnectv1 {
+public class DBConnect {
  private Connection con; 
  private Statement st; 
  private ResultSet rs;
@@ -24,10 +24,8 @@ public class DBConnectv1 {
  Map<String, String> temp = new LinkedHashMap<String, String>(); 
  
  
-  //DropDown options;
 
- public DBConnectv1(){
-	// options = new DropDown(); 
+ public DBConnect(){
 	 try{ 
 		 Class.forName("com.mysql.jdbc.Driver");
 	     con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clicker", "root", "");
