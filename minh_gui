@@ -29,24 +29,34 @@ public class GUIv6 {
 	ArrayList<String> durationCol;
 	
 	Map<String, String> nameCol; 
+	
+	int num = 0; 
+	Timer t; 
+	JProgressBar jb = new JProgressBar(0,200000); 
 
 	DBConnectv1 connect = new DBConnectv1(); 
 	QueryBuilderMini qbm = new QueryBuilderMini(); 
 
- 
+	boolean doer = false; 
 	int randomInt = 0; 
+	
+	private static int interval = 0; 
 	
 	String classResp = ""; 
 	String sessionResp = "1"; 
 
 	GUIv6(){
-		/*
+	
 		try
 		{
 			setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,20));
 		}
 		catch(Exception e){}
-		*/
+		
+		    
+		    jb.setValue(0);
+		    jb.setStringPainted(true);
+		
 		questionCol = new ArrayList<String>(); 
 		durationCol = new ArrayList<String>();
 		nameCol = new LinkedHashMap<String, String>(); 
@@ -64,7 +74,7 @@ public class GUIv6 {
 
 		//****CENTER PART****//
 
-		int panelsRow = 8;	//row
+		int panelsRow = 10;	//row
 		int panelsCol = 4;	//column
 		JPanel[][] panelHolder = new JPanel[panelsRow][panelsCol];    
 		dropdowns.setLayout(new GridLayout(panelsRow,panelsCol));
@@ -87,12 +97,18 @@ public class GUIv6 {
 		JLabel label_4 = new JLabel("Filter");
 		JLabel label_5 = new JLabel("Order by");
 		JLabel label_6 = new JLabel("Ignore");
+		JLabel label_7 = new JLabel("Question");
+		JLabel label_8 = new JLabel("Answer");
+		
 
 		panelHolder[1][0].add(label_2);
 		panelHolder[2][0].add(label_3);
 		panelHolder[3][0].add(label_4);
 		panelHolder[4][0].add(label_5);
 		panelHolder[5][0].add(label_6);
+		panelHolder[8][1].add(label_7);
+		panelHolder[8][2].add(label_8);
+		
 
 		//****DROPDOWNS****//
 
@@ -108,13 +124,20 @@ public class GUIv6 {
 
 		String showOptions[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
 		String orderOptions[] = {"By Name", "By Time"};
+		
+		
+		String questionList[] = {"1", "2", "3", "4", "5"}; 
+		String answerList[] = {"A", "B", "C", "D", "E"}; 
 
 		JComboBox classMenu = new JComboBox(classList);
 		JComboBox sessionMenu = new JComboBox(sessionList);
 		JComboBox showMenu = new JComboBox(showOptions);
 		JComboBox orderMenu = new JComboBox(orderOptions);
+		JComboBox questionMenu = new JComboBox(questionList); 
+		JComboBox answerMenu = new JComboBox(answerList); 
 		JCheckBox checkBox_1 = new JCheckBox("Paired questions");
 		JCheckBox checkBox_2 = new JCheckBox("1st half");
+		
 
 		panelHolder[1][1].add(classMenu);		
 		panelHolder[2][1].add(sessionMenu);		
@@ -122,7 +145,13 @@ public class GUIv6 {
 		panelHolder[4][1].add(orderMenu);		
 		panelHolder[5][1].add(checkBox_1);		
 		panelHolder[6][1].add(checkBox_2);
-		panelHolder[7][1].add(goB);				
+		panelHolder[7][1].add(goB);
+		panelHolder[8][1].add(questionMenu);
+		panelHolder[8][2].add(answerMenu);
+		JButton butt = new JButton("Update Answer"); 
+		panelHolder[8][3].add(butt); 
+		
+		
 
 	//	connect.getResponse();
 		//connect.getImage();
@@ -153,6 +182,8 @@ public class GUIv6 {
 		panelHolder[4][2].add(radioButton_1); panelHolder[4][3].add(radioButton_2);
 		panelHolder[5][2].add(checkBox_3);
 		panelHolder[6][2].add(checkBox_4);
+		panelHolder[7][2].add(jb);
+
 
 		//****RESULTS****//
 
@@ -194,6 +225,8 @@ public class GUIv6 {
 		f.setVisible(true);
 
 
+		
+		
 
 
 		//****ACTION LISTENERS FOR BUTTONS****//
@@ -201,6 +234,8 @@ public class GUIv6 {
 		ActionListener go = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
 
+				
+				doer = true; 
 				String order = ""; 
 				String orderCol = ""; 
 
@@ -236,10 +271,12 @@ public class GUIv6 {
 				classResp = (String)classMenu.getItemAt(classMenu.getSelectedIndex());
 				sessionResp = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex()); 
 
+				// t.start();
+				//connect.getImage(sessionResp); 
+				//connect.getResponse(sessionResp); 
+				 //t.stop();
 				
-				connect.getImage(sessionResp); 
-				connect.getResponse(sessionResp); 
-				
+		
 				//	String argum = qbm.qnameQuery(sessionResp); 
 					//String argum1 = qbm.duraQuery(sessionResp);
 					String argum2 = qbm.fquery(sessionResp, order, orderCol);
@@ -250,6 +287,11 @@ public class GUIv6 {
 				//questionCol.clear(); 
 				//durationCol.clear(); 
 				nameCol.clear(); 
+				num = 0; 
+				t.start();
+				
+				
+				
 				
 				//questionCol = connect.getQuestions(argum); 
 				//durationCol = connect.getDuration(argum1);
@@ -305,6 +347,24 @@ public class GUIv6 {
 			
 
 		};
+		
+	
+	t = new Timer(interval, new ActionListener() {
+		public void actionPerformed(ActionEvent e){
+			if(num == 2000000){
+				t.stop();
+				
+				}else{ 
+				num++;
+				jb.setValue(num); 
+				
+			}
+		}
+		
+	}); 
+		
+	
+	
 		
 		ActionListener update = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -375,6 +435,8 @@ public class GUIv6 {
 		barchartB.addActionListener(barchart);
 	}
 
+	
+	
 
 	/*
 	 * WIP
