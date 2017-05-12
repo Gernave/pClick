@@ -1,12 +1,15 @@
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 
-public class DBConnect {
+public class DBConnectv1 {
  private Connection con; 
  private Statement st; 
  private ResultSet rs;
@@ -17,11 +20,13 @@ public class DBConnect {
  ArrayList<String> strttime = new ArrayList<String>(); 
  TreeMap<String, String>IDnfans = new TreeMap<String, String>(); 
  ArrayList<String> dura = new ArrayList<String>();
+ QueryBuilderMini qdm = new QueryBuilderMini(); 
+ Map<String, String> temp = new LinkedHashMap<String, String>(); 
  
  
   //DropDown options;
 
- public DBConnect(){
+ public DBConnectv1(){
 	// options = new DropDown(); 
 	 try{ 
 		 Class.forName("com.mysql.jdbc.Driver");
@@ -38,11 +43,16 @@ public class DBConnect {
  public ArrayList<String> getcoursename(){ 
 	 try{ 
 		 String query = "SELECT course_name FROM courses"; 
+		
 		 rs = st.executeQuery(query); 
-		 System.out.println("Records from database");
+		// System.out.println("Records from database");
 		 while(rs.next()){ 
 			// String id = rs.getString("id");
 			 String coursename = rs.getString("course_name"); 
+			 File file = new File("d:\\" + coursename);
+			  if (!file.exists()) {
+				  file.mkdir(); 
+			  }
 			 System.out.println("The courses are: " + coursename);
 			 cour.add(coursename);
 			 
@@ -55,15 +65,22 @@ public class DBConnect {
 	 return cour; 
  }
  
+ 
+ 
  public ArrayList<String> getsession(){ 
 	 try{ 
 		 String query = "SELECT id FROM sessions WHERE course_id = 1"; 
 		 rs = st.executeQuery(query); 
-		 System.out.println("Records from database");
+		// System.out.println("Records from database");
 		 while(rs.next()){ 
+			 
 			// String id = rs.getString("id");
-			 String id = rs.getString("id"); 
-			 System.out.println("The answer is: " + id);
+			 String id = rs.getString("id");
+			 File file = new File("d:\\CS 141 FALL 2016\\" + id);
+			 if (!file.exists()) {
+				  file.mkdir(); 
+			  }
+		//	 System.out.println("The answer is: " + id);
 			 ans.add(id);
 			 
 			 
@@ -74,95 +91,30 @@ public class DBConnect {
 	 }
 	 return ans; 
  }
+	
+	
 	 
-	 
-	 public ArrayList<String> getQuestions(){ 
-		 try{ 
-			 String query = "SELECT name FROM questions WHERE session_id = 2";
-			
-			 rs = st.executeQuery(query); 
-			 System.out.println("Records from database");
-			 while(rs.next()){ 
-				// String id = rs.getString("id");
-				 String qname = rs.getString("name"); 
-				System.out.println(qname);
-				 ids.add(qname); 
-			 }
-			 
-		 }catch(Exception ex){ 
-			 System.out.println(ex);
-		 }
-	 
-		 return ids;  
-	 
-	 
- }
+	
 	 
 	 
 	 
-	 public ArrayList<String> getAnswers(){ 
-		 try{ 
-			 String query = "SELECT name, duration FROM questions WHERE session_id = 2";
-			
-			 rs = st.executeQuery(query); 
-			 System.out.println("Records from database");
-			 while(rs.next()){ 
-				// String id = rs.getString("id");
-				 String time = rs.getString("duration");
-				 String name = rs.getString("name");
-			//	 System.out.println("The clicker ID is: " + time);
-				 strttime.add(time); 
-			 }
-			 
-		 }catch(Exception ex){ 
-			 System.out.println(ex);
-		 }
-	 
-		 return strttime;  
-		 
-		 
-	 }
-	 
-	 public TreeMap<String, String> getIDnFancs(){
-		 try{ 
-			 String query = "SELECT clickerID, ans FROM votes WHERE question_id = 1"; 
-			 rs = st.executeQuery(query); 
-			 System.out.println("Records from database");
-			 while(rs.next()){ 
-				 String ID = rs.getString("clickerID");
-				 String fresp = rs.getString("ans"); 
-				 IDnfans.put(ID, fresp); 
-				 
-				
-				 
-				 
-				 
-				 
-			 }
-			 
-		 }catch(Exception ex){ 
-			 System.out.println(ex);
-		 } 
-		 
-		return IDnfans; 
-		 
-	 }
-	 
-	 public String getImage(){
+	 public String getImage(String session){
 		 
 		 String counter = null;
 		 InputStream is = null; 
 		 try{ 
 			 int count = 0; 
-			 String query = "SELECT picture FROM questions WHERE questions.id = 1"; 
+			 String query = "SELECT picture FROM questions WHERE session_id = " + session;
+			 
+			
 			 
 			 rs = st.executeQuery(query); 
-			 System.out.println("Records from database");
+			// System.out.println("Records from database");
 			 while(rs.next()){ 
 				 count++;
 				 counter = Integer.toString(count); 
 				  is=rs.getBinaryStream(1);
-				  FileOutputStream fos=new FileOutputStream("d:\\"+counter+".jpg");
+				  FileOutputStream fos=new FileOutputStream("d:\\CS 141 FALL 2016\\"+session+"\\"+counter+".jpg");
 					 int k;
 					 while((k=is.read())!=-1)
 					 {
@@ -181,28 +133,68 @@ public class DBConnect {
 	 }
 	 
 	 
-	 public ArrayList<String> getDuration(){ 
+ public String getResponse(String session){
+		 
+		 String counter = null;
+		 InputStream is = null; 
 		 try{ 
-			 String query = "SELECT duration FROM questions WHERE session_id = 2";
+			 int count = 0; 
+			 String query = "SELECT response FROM questions WHERE session_id = 2";
+			 
+			 
+			 
+			 rs = st.executeQuery(query); 
+			// System.out.println("Records from database");
+			 while(rs.next()){ 
+				 count++;
+				 counter = Integer.toString(count); 
+				  is=rs.getBinaryStream(1);
+				  FileOutputStream fos=new FileOutputStream("d:\\CS 141 FALL 2016\\"+session+"\\"+"r"+counter+".jpg");
+					 int k;
+					 while((k=is.read())!=-1)
+					 {
+					 fos.write(k);
+					 }
+				 fos.close();
+			 }
+			
+			 
+		 }catch(Exception ex){ 
+			 System.out.println(ex);
+		 }
+		return "d:\\"+"r"+counter+".jpg";
+		 
+		 
+	 }
+	 
+	 
+	 
+	 
+	 public Map<String, String> getBoth(String arg){ 
+		 try{ 
+			 String query = arg;
+			// System.out.println("Query is " + query);
 			
 			 rs = st.executeQuery(query); 
-			 System.out.println("Records from database");
+			 //System.out.println("Records from database");
 			 while(rs.next()){ 
 				// String id = rs.getString("id");
 				 String duration = rs.getString("duration");
+				 String name = rs.getString("name");
 				 
 			//	 System.out.println("The clicker ID is: " + time);
-				 dura.add(duration); 
+				 temp.put(name,duration); 
 			 }
 			 
 		 }catch(Exception ex){ 
 			 System.out.println(ex);
 		 }
 	 
-		 return dura;  
-		 
+		 return temp;  
 		 
 	 }
+	 
+	 
 	 
 	 
 	 
