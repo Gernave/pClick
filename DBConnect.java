@@ -139,7 +139,7 @@ public class DBConnectv1 {
 		 InputStream is = null; 
 		 try{ 
 			 int count = 0; 
-			 String query = "SELECT response FROM questions WHERE session_id = 2";
+			 String query = "SELECT response FROM questions WHERE session_id = " + session;
 			 
 			 
 			 
