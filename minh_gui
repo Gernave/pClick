@@ -1,5 +1,4 @@
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -10,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 public class GUIv6 {
 
 	private JFrame f = new JFrame("Title");//main window
@@ -23,40 +24,37 @@ public class GUIv6 {
 	private JButton barchartB = new JButton("Show answers");
 
 	private JButton screenshotB = new JButton("Show questions");
-	
-	ArrayList<String> questionCol; 
-	
-	ArrayList<String> durationCol;
-	
-	Map<String, String> nameCol; 
-	
-	int num = 0; 
-	Timer t; 
-	JProgressBar jb = new JProgressBar(0,200000); 
 
-	DBConnectv1 connect = new DBConnectv1(); 
+	ArrayList<String> questionCol; 
+
+	ArrayList<String> durationCol;
+
+	Map<String, String> nameCol; 
+
+	
+	
+	
+
+	DBConnect connect = new DBConnect(); 
 	QueryBuilderMini qbm = new QueryBuilderMini(); 
 
 	boolean doer = false; 
 	int randomInt = 0; 
-	
+
 	private static int interval = 0; 
-	
+
 	String classResp = ""; 
 	String sessionResp = "1"; 
 
 	GUIv6(){
-	
-		try
+
+		/*try
 		{
-			setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,20));
+			setUIFont(new javax.swing.plaf.FontUIResource("Tahoma",Font.PLAIN,10));
 		}
 		catch(Exception e){}
-		
-		    
-		    jb.setValue(0);
-		    jb.setStringPainted(true);
-		
+		 */
+
 		questionCol = new ArrayList<String>(); 
 		durationCol = new ArrayList<String>();
 		nameCol = new LinkedHashMap<String, String>(); 
@@ -74,7 +72,7 @@ public class GUIv6 {
 
 		//****CENTER PART****//
 
-		int panelsRow = 10;	//row
+		int panelsRow = 8;	//row
 		int panelsCol = 4;	//column
 		JPanel[][] panelHolder = new JPanel[panelsRow][panelsCol];    
 		dropdowns.setLayout(new GridLayout(panelsRow,panelsCol));
@@ -97,18 +95,19 @@ public class GUIv6 {
 		JLabel label_4 = new JLabel("Filter");
 		JLabel label_5 = new JLabel("Order by");
 		JLabel label_6 = new JLabel("Ignore");
-		JLabel label_7 = new JLabel("Question");
-		JLabel label_8 = new JLabel("Answer");
-		
+		//JLabel label_7 = new JLabel("Question");
+		//JLabel label_8 = new JLabel("Answer");
 
-		panelHolder[1][0].add(label_2);
-		panelHolder[2][0].add(label_3);
-		panelHolder[3][0].add(label_4);
-		panelHolder[4][0].add(label_5);
-		panelHolder[5][0].add(label_6);
-		panelHolder[8][1].add(label_7);
-		panelHolder[8][2].add(label_8);
+
+		panelHolder[0][0].add(label_2);
+		panelHolder[1][0].add(label_3);
+		panelHolder[2][0].add(label_4);
+		panelHolder[3][0].add(label_5);
+		panelHolder[4][0].add(label_6);
 		
+		//panelHolder[8][1].add(label_7);
+		//panelHolder[8][2].add(label_8);
+
 
 		//****DROPDOWNS****//
 
@@ -124,8 +123,8 @@ public class GUIv6 {
 
 		String showOptions[] = {"CHOICE 1","CHOICE 2", "CHOICE 3"};
 		String orderOptions[] = {"By Name", "By Time"};
-		
-		
+
+
 		String questionList[] = {"1", "2", "3", "4", "5"}; 
 		String answerList[] = {"A", "B", "C", "D", "E"}; 
 
@@ -137,32 +136,24 @@ public class GUIv6 {
 		JComboBox answerMenu = new JComboBox(answerList); 
 		JCheckBox checkBox_1 = new JCheckBox("Paired questions");
 		JCheckBox checkBox_2 = new JCheckBox("1st half");
-		
 
-		panelHolder[1][1].add(classMenu);		
-		panelHolder[2][1].add(sessionMenu);		
-		panelHolder[3][1].add(showMenu);
-		panelHolder[4][1].add(orderMenu);		
-		panelHolder[5][1].add(checkBox_1);		
-		panelHolder[6][1].add(checkBox_2);
-		panelHolder[7][1].add(goB);
-		panelHolder[8][1].add(questionMenu);
-		panelHolder[8][2].add(answerMenu);
-		JButton butt = new JButton("Update Answer"); 
-		panelHolder[8][3].add(butt); 
-		
-		
 
-	//	connect.getResponse();
-		//connect.getImage();
-			
+		panelHolder[0][1].add(classMenu);		
+		panelHolder[1][1].add(sessionMenu);		
+		panelHolder[2][1].add(showMenu);
+		panelHolder[3][1].add(orderMenu);		
+		panelHolder[4][1].add(checkBox_1);		
+		panelHolder[5][1].add(checkBox_2);
+		panelHolder[6][1].add(goB);
+		//panelHolder[7][1].add(questionMenu);
+
 
 
 		//****RIGHT COLUMN****//
-		
+
 		JTextField textField = new JTextField("", 10);
 		textField.setSize(50, 10);
-		
+
 		JCheckBox checkBox_3 = new JCheckBox("Unpaired suestions");
 		JCheckBox checkBox_4 = new JCheckBox("2nd half");
 		JRadioButton radioButton_1 = new JRadioButton("Ascending");
@@ -171,23 +162,25 @@ public class GUIv6 {
 		JPanel radioButtons = new JPanel();
 		radioButtons.add(radioButton_1);
 		radioButtons.add(radioButton_2);
-		
+
 		ButtonGroup group = new ButtonGroup();
 		group.add(radioButton_1);
 		group.add(radioButton_2);
 		radioButton_1.setSelected(true); 
 
 
-		panelHolder[3][2].add(textField);
-		panelHolder[4][2].add(radioButton_1); panelHolder[4][3].add(radioButton_2);
-		panelHolder[5][2].add(checkBox_3);
-		panelHolder[6][2].add(checkBox_4);
-		panelHolder[7][2].add(jb);
+		JButton butt = new JButton("Update Answer"); 
+		
+		panelHolder[2][2].add(textField);
+		panelHolder[3][2].add(radioButton_1); 	panelHolder[3][3].add(radioButton_2);
+		panelHolder[4][2].add(checkBox_3);
+		panelHolder[5][2].add(checkBox_4);
 
+		//panelHolder[8][2].add(answerMenu);		panelHolder[8][3].add(butt); 
 
 		//****RESULTS****//
 
-				//***Table***//
+		//***Table***//
 
 		String[] columns = new String[] {
 				"Question Id", "Time taken", "1st try", "2nd try", "Session"
@@ -206,11 +199,12 @@ public class GUIv6 {
 
 		results.add(new JScrollPane(table));
 
-				//***Picture buttons***//
+		//***Picture buttons***//
 
 		JPanel pictureButtons = new JPanel();
 		pictureButtons.add(screenshotB);
 		pictureButtons.add(barchartB);
+		pictureButtons.add(butt);
 
 		results.add(pictureButtons);
 
@@ -225,147 +219,60 @@ public class GUIv6 {
 		f.setVisible(true);
 
 
-		
-		
+
+
 
 
 		//****ACTION LISTENERS FOR BUTTONS****//
 
 		ActionListener go = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
-
+				System.out.println(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()));
 				
 				doer = true; 
 				String order = ""; 
 				String orderCol = ""; 
 
-				checkBox_1.isSelected();//checks whether checkbox is selected
 
-				//table.getModel().setValueAt("It works", 1, 1);//command for editing table
-
-
-				Random randomGenerator = new Random();
-				int randomInt; 
-				int randomInt1; 
-				ArrayList<Integer> a = new ArrayList<Integer>();
-				ArrayList<Integer> b = new ArrayList<Integer>(); 
-					
-				if(radioButton_1.isSelected()){//checks whether radiobutton is selected
-					 order = "ASC"; 
+				if(radioButton_1.isSelected()){
+					order = "ASC"; 
 				}else if(radioButton_2.isSelected()){ 
-					 order = "DESC"; 
+					order = "DESC"; 
 				}
-				
+
 				if(orderMenu.getItemAt(orderMenu.getSelectedIndex()).equals("By Time")){
-					 orderCol = "duration";
+					orderCol = "duration";
 				}else{ 
-					 orderCol = "name"; 
+					orderCol = "name"; 
 				}
-				
-				
-			
-				
-				
-				
 
 				classResp = (String)classMenu.getItemAt(classMenu.getSelectedIndex());
 				sessionResp = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex()); 
 
-				// t.start();
-				//connect.getImage(sessionResp); 
-				//connect.getResponse(sessionResp); 
-				 //t.stop();
-				
-		
-				//	String argum = qbm.qnameQuery(sessionResp); 
-					//String argum1 = qbm.duraQuery(sessionResp);
-					String argum2 = qbm.fquery(sessionResp, order, orderCol);
-				
-
-				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals("1")){
-				
-				//questionCol.clear(); 
-				//durationCol.clear(); 
+				String argum2 = qbm.fquery(sessionResp, order, orderCol);
 				nameCol.clear(); 
-				num = 0; 
-				t.start();
 				
-				
-				
-				
-				//questionCol = connect.getQuestions(argum); 
-				//durationCol = connect.getDuration(argum1);
 				nameCol = connect.getBoth(argum2); 
-				
-/*
-				for(int i = 0; i<questionCol.size(); i++){
-					table.getModel().setValueAt(questionCol.get(i), i, 0);
-				text.append("\n");
-				}
-*/
+
 				int count = 0; 
 				for (String name: nameCol.keySet()){
-					
-		            String key =name.toString();
-		            String value = nameCol.get(name).toString(); 
-		            table.getModel().setValueAt(key, count, 0);
-		            table.getModel().setValueAt(value, count, 1);
-		            
-		           count++; 
 
+					String key =name.toString();
+					String value = nameCol.get(name).toString(); 
+					table.getModel().setValueAt(key, count, 0);
+					table.getModel().setValueAt(value, count, 1);
 
-		} 
-				
-				
-				
-
-				for(int i = 0; i<nameCol.size(); i++){ 
-					randomInt = randomGenerator.nextInt(60) + 20;
-					randomInt1 = randomGenerator.nextInt(75) + 25; 
-					a.add(randomInt); 
-					b.add(randomInt1);
-					
-					String Int = Integer.toString(randomInt); 
-					String Int1 = Integer.toString(randomInt1); 
-					
-
-					table.getModel().setValueAt(Int+"%", i, 2);
-					table.getModel().setValueAt(Int1+"%", i, 3);
-					table.getModel().setValueAt("1", i, 4);
-
-				}
-
-			
-				
-				
-				
-
+					count++; 
+				} 
 			}
-			
-
-			
-			
-
 		};
+
+
 		
-	
-	t = new Timer(interval, new ActionListener() {
-		public void actionPerformed(ActionEvent e){
-			if(num == 2000000){
-				t.stop();
-				
-				}else{ 
-				num++;
-				jb.setValue(num); 
-				
-			}
-		}
-		
-	}); 
-		
-	
-	
-		
+
+
+
+
 		ActionListener update = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -378,22 +285,28 @@ public class GUIv6 {
 
 		ActionListener screenshot = new ActionListener() {			
 			public void actionPerformed(ActionEvent e) {
+				
+				String sessionSelected = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex());
+				
+				int questionSelected = 1;
 
-				int questionSelected = 0;
-
-				for(int i=0;i<5;i++){
+				for(int i=0;i<nameCol.size();i++){
 					if(table.isRowSelected(i)){ //function for checking row
 						questionSelected = i+1;
 					}
 				}
-				//Make sure to make an error message if the user does not pick any questions!!!!!!!!!!!!!!!!!!!!!
+				//Make sure to make an error message if the user does not pick any questions!!!!!!!!!!!!
 				JFrame imageWindow = new JFrame("Image");
 				System.out.println("Row is " + questionSelected);
-				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected))){
-				
-				ImageIcon image = new ImageIcon("d:\\"+Integer.toString(questionSelected)+".jpg");//insert image address here
 
-				JLabel imageLabel = new JLabel(image); 
+				System.out.println("namecol is " + nameCol.size());
+				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected)))
+				
+				Image image = connect.getImage2(sessionSelected,Integer.toString(questionSelected));
+				Image newimg = image.getScaledInstance(1024, 768,  java.awt.Image.SCALE_SMOOTH); 
+				ImageIcon icon = new ImageIcon(newimg);
+				JLabel imageLabel = new JLabel(icon); 
+				
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
 				imageWindow.setVisible(true);
@@ -404,21 +317,30 @@ public class GUIv6 {
 
 		ActionListener barchart = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				String sessionSelected = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex());
+				
 				int questionSelected = 0;
-
-				for(int i=0;i<5;i++){
+				
+				for(int i=0;i<nameCol.size();i++){
 					if(table.isRowSelected(i)){ //function for checking row
 						questionSelected = i+1;
 					}
 				}
 				//Make sure to make an error message if the user does not pick any questions!!!!!!!!!!!!!!!!!!!!!
+				
 				JFrame imageWindow = new JFrame("Image");
 				System.out.println("Row is " + questionSelected);
-				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected))){
-				 
-				ImageIcon image = new ImageIcon("d:\\"+"r"+Integer.toString(questionSelected)+".jpg");//insert image address here
+				System.out.println("namecol is " + nameCol.size());
+				//if(sessionMenu.getItemAt(sessionMenu.getSelectedIndex()).equals(Integer.toString(questionSelected)))
 
-				JLabel imageLabel = new JLabel(image); 
+
+				Image image = connect.getResponse2(sessionSelected,Integer.toString(questionSelected));
+				
+				ImageIcon icon = new ImageIcon(image);
+				JLabel imageLabel = new JLabel(icon); 
+				
+				
 				imageWindow.add(imageLabel);
 				imageWindow.add(imageLabel);
 				imageWindow.pack();
@@ -435,8 +357,8 @@ public class GUIv6 {
 		barchartB.addActionListener(barchart);
 	}
 
-	
-	
+
+
 
 	/*
 	 * WIP
