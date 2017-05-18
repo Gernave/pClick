@@ -1,7 +1,10 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
+
 
 public class GUI {
 
@@ -16,6 +19,9 @@ public class GUI {
 	private JButton barchartB = new JButton("Show answers");
 
 	private JButton screenshotB = new JButton("Show questions");
+	
+	private JButton updateAnswerB = new JButton("Update Answer"); 
+	
 
 	ArrayList<String> questionCol; 
 
@@ -112,7 +118,7 @@ public class GUI {
 		String filterOptions[] = {"Above","Below", "Exactly"};
 		String orderOptions[] = {"By Name", "By Time"};
 
-		String questionList[] = {"1", "2", "3", "4", "5"}; 
+		String questionList[] = {"1", "2", "3", "4", "5", "6", "7", "8"}; 
 		String answerList[] = {"A", "B", "C", "D", "E"}; 
 
 		
@@ -158,7 +164,6 @@ public class GUI {
 		radioButton_1.setSelected(true); 
 
 
-		JButton updateAnswerB = new JButton("Update Answer"); 
 		
 		panelHolder[2][2].add(textField);
 		panelHolder[3][2].add(radioButton_1); 	panelHolder[3][3].add(radioButton_2);
@@ -287,7 +292,7 @@ public class GUI {
 				
 				String sessionSelected = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex());
 				
-				int questionSelected = 1;
+				int questionSelected = 0;
 
 				for(int i=0;i<nameCol.size();i++){
 					if(table.isRowSelected(i)){ 
@@ -295,7 +300,16 @@ public class GUI {
 					}
 				}
 				
+				
+				if(questionSelected==0){
+			JOptionPane.showMessageDialog(null, "Please Select a Question"); 
+				}
 				Image image = connect.getImage2(sessionSelected,Integer.toString(questionSelected));
+	
+			//	System.out.println("Selected is " + Integer.toString(questionSelected));
+				
+				
+				
 				
 				image = image.getScaledInstance(1024, 768,  java.awt.Image.SCALE_SMOOTH); 
 				ImageIcon icon = new ImageIcon(image);
@@ -320,7 +334,11 @@ public class GUI {
 						questionSelected = i+1;
 					}
 				}
-
+				
+				if(questionSelected==0){
+					JOptionPane.showMessageDialog(null, "Please Select a Response"); 
+						}
+				
 				Image image = connect.getResponse2(sessionSelected,Integer.toString(questionSelected));
 				
 				ImageIcon icon = new ImageIcon(image);
@@ -335,7 +353,23 @@ public class GUI {
 			}
 		};
 
-
+		
+		ActionListener updateAnswer = new ActionListener() {			
+			public void actionPerformed(ActionEvent e) {
+				
+			String session = (String)sessionMenu.getItemAt(sessionMenu.getSelectedIndex());
+			String	question = (String)questionMenu.getItemAt(questionMenu.getSelectedIndex()); 
+			String answer = (String)answerMenu.getItemAt(answerMenu.getSelectedIndex()); 
+			connect.addAnswer(question, answer, session); 
+			
+			}
+		};
+		
+		
+		
+		
+		
+		updateAnswerB.addActionListener(updateAnswer);
 		goB.addActionListener(go);  
 		updateB.addActionListener(update); 
 		helpB.addActionListener(help);
