@@ -243,4 +243,32 @@ public class DBConnect {
 
 		return temp;  
 	}
+	
+	
+	public void addAnswer(String question, String answer, String session){
+		
+		question = "\"Question "+ question+"\"";
+		answer = "\""+answer+"\"";
+		
+		
+		try{ 
+			String query = "UPDATE questions SET answer = " + answer + " WHERE name = " + question + " AND session_id = " + session;
+			System.out.println(query);
+			 st.executeUpdate(query); 
+			
+
+		}catch(Exception ex){ 
+			System.out.println(ex);
+		}
+
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
